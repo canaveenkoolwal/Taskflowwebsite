@@ -550,7 +550,7 @@ async function processPayment(){
 
   const options={
     key: RAZORPAY_KEY,
-    amount: 500, // TEST: ₹5 — restore to order.amount before going live
+    amount: order.amount,
     currency: order.currency||'INR',
     name: 'TaskFlow',
     description: 'TaskFlow Professional — Monthly',
@@ -567,7 +567,9 @@ async function processPayment(){
           body:JSON.stringify({
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature
+            razorpay_signature: response.razorpay_signature,
+            name,
+            email
           })
         });
         if(!verifyRes.ok) throw new Error('Verification failed');
