@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskFlow — Task Management for Indian SMEs</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#1a56db;--blue-dark:#1341b0;--blue-light:#e8f0fe;
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
+  --white:#ffffff;--bg:#f8faff;--border:#e2e8f0;
+  --success:#16a34a;--error:#dc2626;
+}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:8px;font-weight:500;font-size:15px;cursor:pointer;border:none;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
+.btn-outline:hover{background:var(--blue-light)}
+.btn-white{background:#fff;color:var(--blue);font-weight:600}
+.btn-white:hover{background:#f0f4ff}
+
+/* ── VIEWS ── */
+#landingView,#signupView{width:100%}
+#signupView{display:none}
+
+/* ══════════════════════════════
+   LANDING PAGE
+══════════════════════════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 5%}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--blue);letter-spacing:-0.5px}
+.logo span{color:var(--text)}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:14px;color:var(--text2);font-weight:500;transition:color 0.2s;cursor:pointer}
+.nav-links a:hover{color:var(--blue)}
+.nav-cta{background:var(--blue);color:#fff;padding:8px 20px;border-radius:8px;font-size:14px;cursor:pointer}
+section{padding:80px 5%}
+.container{max-width:1100px;margin:0 auto}
+
+/* HERO */
+.hero{padding-top:140px;padding-bottom:80px;background:linear-gradient(160deg,#f0f4ff 0%,#ffffff 60%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(26,86,219,0.08) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--blue-light);color:var(--blue);font-size:13px;font-weight:600;padding:6px 14px;border-radius:100px;margin-bottom:24px;border:1px solid rgba(26,86,219,0.2)}
+.hero h1{font-family:'Sora',sans-serif;font-size:52px;font-weight:700;line-height:1.15;letter-spacing:-1.5px;max-width:700px;margin-bottom:20px}
+.hero h1 span{color:var(--blue)}
+.hero p{font-size:18px;color:var(--text2);max-width:520px;line-height:1.7;margin-bottom:36px}
+.hero-cta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.hero-trust{display:flex;align-items:center;gap:8px;margin-top:40px;font-size:13px;color:var(--text3)}
+.trust-dots{display:flex}
+.trust-dot{width:28px;height:28px;border-radius:50%;background:var(--blue-light);border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--blue);margin-left:-6px}
+.trust-dot:first-child{margin-left:0}
+
+/* STATS */
+.stats{background:var(--blue);padding:48px 5%}
+.stats-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.stat{text-align:center}
+.stat-num{font-family:'Sora',sans-serif;font-size:36px;font-weight:700;color:#fff;display:block}
+.stat-label{font-size:14px;color:rgba(255,255,255,0.7);margin-top:4px}
+
+/* FEATURES */
+.features{background:var(--bg)}
+.section-label{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.section-title{font-family:'Sora',sans-serif;font-size:36px;font-weight:700;letter-spacing:-0.8px;margin-bottom:16px}
+.section-sub{font-size:16px;color:var(--text2);max-width:500px;line-height:1.7}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.feature-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px;transition:all 0.2s}
+.feature-card:hover{border-color:rgba(26,86,219,0.3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(26,86,219,0.08)}
+.feature-icon{width:44px;height:44px;border-radius:10px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
+.feature-card h3{font-family:'Sora',sans-serif;font-size:17px;font-weight:600;margin-bottom:8px}
+.feature-card p{font-size:14px;color:var(--text2);line-height:1.6}
+
+/* HOW IT WORKS */
+.how{background:#fff}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px;position:relative}
+.steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:2px;background:linear-gradient(90deg,var(--blue-light),var(--blue),var(--blue-light));z-index:0}
+.step{text-align:center;position:relative;z-index:1}
+.step-num{width:56px;height:56px;border-radius:50%;background:var(--blue);color:#fff;font-family:'Sora',sans-serif;font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:4px solid #fff;box-shadow:0 0 0 2px var(--blue)}
+.step h3{font-size:15px;font-weight:600;margin-bottom:6px}
+.step p{font-size:13px;color:var(--text2);line-height:1.5}
+
+/* PRICING */
+.pricing{background:var(--bg)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.price-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:32px;position:relative}
+.price-card.featured{border:2px solid var(--blue)}
+.price-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:12px;font-weight:700;padding:4px 16px;border-radius:100px;white-space:nowrap}
+.price-plan{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px}
+.price-amount{font-family:'Sora',sans-serif;font-size:40px;font-weight:700;letter-spacing:-1px;color:var(--text)}
+.price-amount span{font-size:16px;font-weight:400;color:var(--text2)}
+.price-desc{font-size:14px;color:var(--text2);margin:8px 0 24px;line-height:1.5}
+.price-divider{height:1px;background:var(--border);margin-bottom:20px}
+.price-features{list-style:none;margin-bottom:28px}
+.price-features li{font-size:14px;color:var(--text2);padding:6px 0;border-bottom:1px solid var(--bg);display:flex;align-items:center;gap:8px}
+.price-features li::before{content:'✓';color:var(--blue);font-weight:700;font-size:13px}
+.price-features li.no::before{content:'✕';color:var(--text3)}
+.price-features li.no{color:var(--text3)}
+
+/* TESTIMONIALS */
+.testimonials{background:#fff}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.testimonial{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:24px}
+.testimonial-text{font-size:15px;line-height:1.7;color:var(--text2);margin-bottom:20px;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:12px}
+.author-avatar{width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.author-name{font-weight:600;font-size:14px}
+.author-role{font-size:12px;color:var(--text3)}
+.stars{color:#f59e0b;font-size:13px;margin-bottom:12px}
+
+/* CTA */
+.cta-section{background:var(--blue);padding:80px 5%;text-align:center}
+.cta-section h2{font-family:'Sora',sans-serif;font-size:40px;font-weight:700;color:#fff;letter-spacing:-1px;margin-bottom:16px}
+.cta-section p{font-size:17px;color:rgba(255,255,255,0.8);max-width:480px;margin:0 auto 36px;line-height:1.6}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.footer-logo{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;color:#fff}
+.footer-links{display:flex;gap:24px;font-size:13px}
+.footer-links a{color:rgba(255,255,255,0.5);transition:color 0.2s;cursor:pointer}
+.footer-links a:hover{color:#fff}
+.footer-copy{font-size:12px;color:rgba(255,255,255,0.3);width:100%;text-align:center;margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1)}
+
+/* ══════════════════════════════
+   SIGNUP / PAYMENT FLOW
+══════════════════════════════ */
+.signup-topbar{position:fixed;top:0;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);padding:0 5%;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between}
+.step-indicator{display:flex;align-items:center;gap:8px}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;transition:all 0.3s}
+.step-dot.done{background:var(--blue);color:#fff}
+.step-dot.active{background:var(--blue);color:#fff;box-shadow:0 0 0 4px var(--blue-light)}
+.step-dot.pending{background:var(--border);color:var(--text3)}
+.step-line{width:32px;height:2px;background:var(--border);transition:background 0.3s}
+.step-line.done{background:var(--blue)}
+.signup-pages{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 16px 32px}
+.spage{display:none;width:100%;max-width:480px}
+.spage.active{display:block}
+.card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:40px;width:100%}
+.card-title{font-family:'Sora',sans-serif;font-size:24px;font-weight:700;letter-spacing:-0.5px;margin-bottom:6px}
+.card-sub{font-size:14px;color:var(--text2);margin-bottom:28px;line-height:1.5}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;font-weight:500;color:var(--text2);margin-bottom:6px}
+.form-group input,.form-group select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--text);background:#fff;outline:none;transition:border 0.2s}
+.form-group input:focus,.form-group select:focus{border-color:var(--blue)}
+.form-group input.error{border-color:var(--error)}
+.err-msg{font-size:12px;color:var(--error);margin-top:4px;display:none}
+.err-msg.show{display:block}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-main{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-main:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.btn-main:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.trust-row{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px}
+.trust-item{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text3)}
+.plan-summary{background:var(--blue-light);border:1.5px solid rgba(26,86,219,0.2);border-radius:12px;padding:16px 20px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center}
+.plan-name{font-weight:600;font-size:15px;color:var(--blue)}
+.plan-price{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--blue)}
+.plan-price span{font-size:13px;font-weight:400;color:#5376b7}
+.payment-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.payment-opt{border:1.5px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;text-align:center;transition:all 0.2s;background:#fff}
+.payment-opt:hover{border-color:var(--blue)}
+.payment-opt.selected{border-color:var(--blue);background:var(--blue-light)}
+.payment-opt-icon{font-size:24px;margin-bottom:4px}
+.payment-opt-label{font-size:13px;font-weight:500;color:var(--text2)}
+.payment-opt.selected .payment-opt-label{color:var(--blue)}
+.order-summary{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px}
+.order-row{display:flex;justify-content:space-between;padding:12px 16px;font-size:14px}
+.order-row:not(:last-child){border-bottom:1px solid var(--border)}
+.order-row.total{background:var(--bg);font-weight:600;font-size:15px}
+.order-label{color:var(--text2)}
+.order-value{color:var(--text);font-weight:500}
+.order-value.blue{color:var(--blue)}
+.rzp-badge{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--text3);margin-top:12px}
+.rzp-logo{background:#072654;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
+.success-icon{width:72px;height:72px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 20px}
+.success-steps{list-style:none;margin:20px 0;text-align:left}
+.success-steps li{padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text2);display:flex;align-items:flex-start;gap:10px}
+.success-steps li:last-child{border-bottom:none}
+.btn-secondary{width:100%;padding:12px;background:var(--blue-light);color:var(--blue);border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;margin-top:8px}
+.btn-secondary:hover{background:#d1e0fc}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     LANDING PAGE
+══════════════════════════════ -->
+<div id="landingView">
+  <nav>
+    <div class="nav-inner">
+      <div class="logo">Task<span>Flow</span></div>
+      <div class="nav-links">
+        <a onclick="scrollTo('features')">Features</a>
+        <a onclick="scrollTo('how')">How it works</a>
+        <a onclick="scrollTo('pricing')">Pricing</a>
+        <a class="nav-cta" onclick="showSignup()">Start Free Trial</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-badge">🚀 Built for Indian SMEs</div>
+      <h1>Task Management<br>That <span>Actually Works</span><br>For Your Team</h1>
+      <p>TaskFlow brings your entire team's work into one place — assign tasks, track progress, get alerts, and hit deadlines. All inside Google Sheets.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="showSignup()">Start Free Trial →</button>
+        <button class="btn btn-outline" onclick="scrollTo('how')">See How It Works</button>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-dots">
+          <div class="trust-dot">A</div><div class="trust-dot">B</div><div class="trust-dot">C</div><div class="trust-dot">D</div>
+        </div>
+        <span>Trusted by 50+ firms across India</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat"><span class="stat-num">50+</span><div class="stat-label">Firms Using TaskFlow</div></div>
+      <div class="stat"><span class="stat-num">5,000+</span><div class="stat-label">Tasks Managed</div></div>
+      <div class="stat"><span class="stat-num">98%</span><div class="stat-label">On-time Delivery Rate</div></div>
+      <div class="stat"><span class="stat-num">₹999</span><div class="stat-label">Per Month Only</div></div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-label">Features</div>
+      <div class="section-title">Everything Your Team Needs</div>
+      <div class="section-sub">Built on Google Sheets — no new software to learn. Your team is up and running in minutes.</div>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon">📋</div><h3>Smart Task Assignment</h3><p>Assign tasks to team members with deadlines, priority levels, and auto-synced individual sheets for each person.</p></div>
+        <div class="feature-card"><div class="feature-icon">🔁</div><h3>Recurring Tasks</h3><p>Set daily, weekly, monthly, or yearly recurring tasks that auto-create themselves — never miss a routine again.</p></div>
+        <div class="feature-card"><div class="feature-icon">📊</div><h3>Live Dashboard</h3><p>Visual charts showing task completion, overdue items, team performance — refreshed every 15 minutes automatically.</p></div>
+        <div class="feature-card"><div class="feature-icon">📧</div><h3>Email Alerts</h3><p>Automatic daily reminders, overdue alerts, and weekly manager digest sent straight to your inbox.</p></div>
+        <div class="feature-card"><div class="feature-icon">✅</div><h3>One-Click Updates</h3><p>Team members update task status directly from email links — no login required, no friction.</p></div>
+        <div class="feature-card"><div class="feature-icon">🔄</div><h3>Manager Controls</h3><p>Extend deadlines, reassign tasks, and track % completion — full control for managers from one screen.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="container">
+      <div class="section-label">How It Works</div>
+      <div class="section-title">Up & Running in 4 Steps</div>
+      <div class="section-sub">No IT team needed. No complex setup. Just sign up and start managing tasks today.</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><h3>Sign Up</h3><p>Create your account and your TaskFlow sheet is auto-created in your Google Drive</p></div>
+        <div class="step"><div class="step-num">2</div><h3>Add Your Team</h3><p>Enter team member emails and individual sheets are created for each person</p></div>
+        <div class="step"><div class="step-num">3</div><h3>Assign Tasks</h3><p>Create tasks with deadlines, priorities, and recurring schedules in seconds</p></div>
+        <div class="step"><div class="step-num">4</div><h3>Track & Win</h3><p>Monitor progress live on your dashboard and get email alerts automatically</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-label">Pricing</div>
+      <div class="section-title">Simple, Honest Pricing</div>
+      <div class="section-sub">No hidden fees. Cancel anytime. Start free for 14 days.</div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-plan">Starter</div>
+          <div class="price-amount">₹0<span>/month</span></div>
+          <div class="price-desc">Perfect for trying out TaskFlow with a small team.</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li>Up to 5 users</li><li>Basic task tracking</li><li>Email reminders</li>
+            <li class="no">Recurring tasks</li><li class="no">Dashboard & charts</li><li class="no">Manager controls</li>
+          </ul>
+          <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="showSignup()">Get Started Free</button>
+        </div>
+        <div class="price-card featured">
+          <div class="price-badge">⭐ Most Popular</div>
+          <div class="price-plan">Professional</div>
+          <div class="price-amount">₹999<span>/month</span></div>
+          <div class="price-desc">Everything your growing firm needs to stay on top.</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li>Unlimited users</li><li>Full task management</li><li>Daily email alerts</li>
+            <li>Recurring tasks (8 types)</li><li>Live dashboard & charts</li><li>Manager controls</li>
+          </ul>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="showSignup()">Start 14-Day Free Trial →</button>
+        </div>
+        <div class="price-card">
+          <div class="price-plan">Enterprise</div>
+          <div class="price-amount">Custom</div>
+          <div class="price-desc">For large teams with custom requirements and support.</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li>Everything in Pro</li><li>Custom integrations</li><li>Dedicated onboarding</li>
+            <li>Priority support</li><li>Custom branding</li><li>SLA guarantee</li>
+          </ul>
+          <button class="btn btn-outline" style="width:100%;justify-content:center">Contact Us</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-label">Testimonials</div>
+      <div class="section-title">Loved by Teams Across India</div>
+      <div class="testimonials-grid">
+        <div class="testimonial"><div class="stars">★★★★★</div><div class="testimonial-text">"TaskFlow completely changed how we manage client deliverables. The email alerts alone saved us from missing 3 critical deadlines last month."</div><div class="testimonial-author"><div class="author-avatar">RK</div><div><div class="author-name">Rajesh Kumar</div><div class="author-role">Director, Kumar & Associates</div></div></div></div>
+        <div class="testimonial"><div class="stars">★★★★★</div><div class="testimonial-text">"Our team of 15 uses it daily. The recurring tasks feature is a game-changer — monthly compliances never slip through the cracks anymore."</div><div class="testimonial-author"><div class="author-avatar">PS</div><div><div class="author-name">Priya Sharma</div><div class="author-role">CA, Sharma Tax Consultants</div></div></div></div>
+        <div class="testimonial"><div class="stars">★★★★★</div><div class="testimonial-text">"Best ₹999 we spend every month. The dashboard gives me a complete picture of where every task stands — I check it every morning."</div><div class="testimonial-author"><div class="author-avatar">AM</div><div><div class="author-name">Amit Mehta</div><div class="author-role">MD, Mehta Manufacturing</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to Get Your Team<br>Organized?</h2>
+      <p>Join 50+ firms already using TaskFlow. Start your free 14-day trial — no credit card required.</p>
+      <div class="cta-btns">
+        <button class="btn btn-white" onclick="showSignup()">Start Free Trial →</button>
+        <button class="btn" style="color:rgba(255,255,255,0.9);border:1.5px solid rgba(255,255,255,0.4)">Schedule a Demo</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">TaskFlow</div>
+      <div class="footer-links">
+        <a onclick="scrollTo('features')">Features</a>
+        <a onclick="scrollTo('pricing')">Pricing</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:support@nkoolwal.com">Contact</a>
+      </div>
+      <div class="footer-copy">© 2026 TaskFlow by nkoolwal.com · All rights reserved · Made in India 🇮🇳</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════
+     SIGNUP + PAYMENT FLOW
+══════════════════════════════ -->
+<div id="signupView">
+  <div class="signup-topbar">
+    <div class="logo">Task<span>Flow</span></div>
+    <div class="step-indicator" id="stepIndicator">
+      <div class="step-dot active" id="dot1">1</div>
+      <div class="step-line" id="line1"></div>
+      <div class="step-dot pending" id="dot2">2</div>
+      <div class="step-line" id="line2"></div>
+      <div class="step-dot pending" id="dot3">✓</div>
+    </div>
+    <span style="font-size:13px;color:var(--text3);cursor:pointer" onclick="showLanding()">← Back to home</span>
+  </div>
+
+  <div class="signup-pages">
+
+    <!-- STEP 1: SIGNUP FORM -->
+    <div class="spage active" id="spage1">
+      <div class="card">
+        <div class="card-title">Create Your Account</div>
+        <div class="card-sub">Set up TaskFlow for your firm in under 2 minutes.</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="fname" placeholder="Naveen Koolwal">
+            <div class="err-msg" id="fnameErr">Please enter your name</div>
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" id="fphone" placeholder="9876543210">
+            <div class="err-msg" id="fphoneErr">Enter valid 10-digit number</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Work Email *</label>
+          <input type="email" id="femail" placeholder="you@yourfirm.com">
+          <div class="err-msg" id="femailErr">Enter a valid email address</div>
+        </div>
+        <div class="form-group">
+          <label>Firm Name *</label>
+          <input type="text" id="ffirm" placeholder="Koolwal & Associates">
+          <div class="err-msg" id="ffirmErr">Please enter your firm name</div>
+        </div>
+        <div class="form-group">
+          <label>Team Size</label>
+          <select id="fteam">
+            <option value="">Select team size</option>
+            <option value="1-5">1–5 people</option>
+            <option value="6-15">6–15 people</option>
+            <option value="16-30">16–30 people</option>
+            <option value="30+">30+ people</option>
+          </select>
+        </div>
+        <button class="btn-main" onclick="goToPayment()">Continue to Payment →</button>
+        <div class="trust-row">
+          <div class="trust-item"><span>🔒</span> Secure signup</div>
+          <div class="trust-item"><span>🇮🇳</span> Made in India</div>
+          <div class="trust-item"><span>✅</span> No spam ever</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: PAYMENT -->
+    <div class="spage" id="spage2">
+      <div class="card">
+        <div class="card-title">Complete Payment</div>
+        <div class="card-sub">You're one step away from getting your team organized.</div>
+        <div class="plan-summary">
+          <div>
+            <div class="plan-name">TaskFlow Professional</div>
+            <div style="font-size:13px;color:#5376b7;margin-top:2px">Unlimited users · All features</div>
+          </div>
+          <div class="plan-price">₹999<span>/mo</span></div>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">Pay via</div>
+        <div class="payment-options">
+          <div class="payment-opt selected" onclick="selectPay(this)"><div class="payment-opt-icon">📱</div><div class="payment-opt-label">UPI / GPay</div></div>
+          <div class="payment-opt" onclick="selectPay(this)"><div class="payment-opt-icon">💳</div><div class="payment-opt-label">Card</div></div>
+          <div class="payment-opt" onclick="selectPay(this)"><div class="payment-opt-icon">🏦</div><div class="payment-opt-label">Net Banking</div></div>
+          <div class="payment-opt" onclick="selectPay(this)"><div class="payment-opt-icon">👛</div><div class="payment-opt-label">Wallets</div></div>
+        </div>
+        <div class="order-summary">
+          <div class="order-row"><span class="order-label">TaskFlow Pro (1 month)</span><span class="order-value">₹999</span></div>
+          <div class="order-row"><span class="order-label">GST (18%)</span><span class="order-value">₹179</span></div>
+          <div class="order-row"><span class="order-label">Discount</span><span class="order-value blue">— ₹0</span></div>
+          <div class="order-row total"><span class="order-label">Total Today</span><span class="order-value">₹1,178</span></div>
+        </div>
+        <div style="font-size:12px;color:var(--text3);background:var(--bg);padding:10px 14px;border-radius:8px;margin-bottom:16px;line-height:1.6">
+          🔄 Auto-renews every month at ₹999 + GST. Cancel anytime from your dashboard.
+        </div>
+        <button class="btn-main" id="payBtn" onclick="processPayment()">Pay ₹1,178 Securely →</button>
+        <div style="text-align:center;margin-top:10px">
+          <span style="font-size:13px;color:var(--text3);cursor:pointer" onclick="goBackToSignup()">← Back to signup</span>
+        </div>
+        <div class="rzp-badge">
+          <span>Powered by</span><span class="rzp-logo">razorpay</span><span>· 256-bit SSL secured</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: SUCCESS -->
+    <div class="spage" id="spage3">
+      <div class="card" style="text-align:center">
+        <div class="success-icon">🎉</div>
+        <div class="card-title" style="text-align:center">You're All Set!</div>
+        <div class="card-sub" style="text-align:center">Payment successful. Welcome to TaskFlow, <strong id="successName">Naveen</strong>!</div>
+        <div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#15803d;text-align:left">
+          ✅ Your TaskFlow sheet is being created in your Google Drive. You'll receive an email at <strong id="successEmail">your email</strong> within 2 minutes.
+        </div>
+        <ul class="success-steps">
+          <li><span>📧</span> Check your email for your TaskFlow Google Sheet link</li>
+          <li><span>👥</span> Add your team members' emails to get started</li>
+          <li><span>📋</span> Create your first task and assign it to someone</li>
+          <li><span>📊</span> Your live dashboard updates automatically every 15 min</li>
+        </ul>
+        <button class="btn-main">Open My TaskFlow Dashboard →</button>
+        <button class="btn-secondary" onclick="showLanding()">← Back to Home</button>
+        <div style="font-size:12px;color:var(--text3);margin-top:16px">Need help? Email us at support@nkoolwal.com</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     RAZORPAY INTEGRATION
+     Replace YOUR_RAZORPAY_KEY_ID with your actual key from razorpay.com
+══════════════════════════════ -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+const RAZORPAY_KEY = 'YOUR_RAZORPAY_KEY_ID'; // ← Replace this
+
+function scrollTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
+
+function showSignup(){
+  document.getElementById('landingView').style.display='none';
+  document.getElementById('signupView').style.display='block';
+  window.scrollTo(0,0);
+}
+function showLanding(){
+  document.getElementById('signupView').style.display='none';
+  document.getElementById('landingView').style.display='block';
+  window.scrollTo(0,0);
+  resetForm();
+}
+
+function validate(id,errId,cond){
+  const el=document.getElementById(id);
+  const err=document.getElementById(errId);
+  if(!cond(el.value)){el.classList.add('error');err.classList.add('show');return false}
+  el.classList.remove('error');err.classList.remove('show');return true;
+}
+
+function goToPayment(){
+  const v1=validate('fname','fnameErr',v=>v.trim().length>1);
+  const v2=validate('fphone','fphoneErr',v=>/^[6-9]\d{9}$/.test(v.trim()));
+  const v3=validate('femail','femailErr',v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()));
+  const v4=validate('ffirm','ffirmErr',v=>v.trim().length>1);
+  if(!v1||!v2||!v3||!v4)return;
+  setStep(2);
+  document.getElementById('spage1').classList.remove('active');
+  document.getElementById('spage2').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goBackToSignup(){
+  setStep(1);
+  document.getElementById('spage2').classList.remove('active');
+  document.getElementById('spage1').classList.add('active');
+}
+
+function selectPay(el){
+  document.querySelectorAll('.payment-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function processPayment(){
+  const name=document.getElementById('fname').value;
+  const email=document.getElementById('femail').value;
+  const phone=document.getElementById('fphone').value;
+
+  // ── Real Razorpay Checkout ──
+  // Uncomment below and replace key once you have Razorpay account
+  /*
+  const options = {
+    key: RAZORPAY_KEY,
+    amount: 117800, // amount in paise (₹1,178 × 100)
+    currency: 'INR',
+    name: 'TaskFlow',
+    description: 'TaskFlow Professional — Monthly',
+    image: 'https://nkoolwal.com/logo.png',
+    prefill: { name, email, contact: phone },
+    notes: { firm: document.getElementById('ffirm').value },
+    theme: { color: '#1a56db' },
+    handler: function(response) {
+      // Payment success — provision the sheet here
+      showSuccess(name, email);
+    }
+  };
+  const rzp = new Razorpay(options);
+  rzp.open();
+  */
+
+  // ── Demo mode (remove once Razorpay is configured) ──
+  const btn=document.getElementById('payBtn');
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner"></div> Processing...';
+  setTimeout(()=>{
+    btn.disabled=false;
+    btn.innerHTML='Pay ₹1,178 Securely →';
+    showSuccess(name,email);
+  },2200);
+}
+
+function showSuccess(name,email){
+  document.getElementById('successName').textContent=name.split(' ')[0];
+  document.getElementById('successEmail').textContent=email;
+  setStep(3);
+  document.getElementById('spage2').classList.remove('active');
+  document.getElementById('spage3').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function setStep(n){
+  for(let i=1;i<=3;i++){
+    const dot=document.getElementById('dot'+i);
+    if(i<n){dot.className='step-dot done';dot.textContent='✓';}
+    else if(i===n){dot.className='step-dot active';dot.textContent=i===3?'✓':i;}
+    else{dot.className='step-dot pending';dot.textContent=i===3?'✓':i;}
+    if(i<3)document.getElementById('line'+i).className='step-line'+(i<n?' done':'');
+  }
+}
+
+function resetForm(){
+  ['fname','fphone','femail','ffirm'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.value='';el.classList.remove('error');}
+  });
+  document.getElementById('fteam').value='';
+  document.querySelectorAll('.err-msg').forEach(e=>e.classList.remove('show'));
+  setStep(1);
+  document.querySelectorAll('.spage').forEach(p=>p.classList.remove('active'));
+  document.getElementById('spage1').classList.add('active');
+}
+</script>
+</body>
+</html>
