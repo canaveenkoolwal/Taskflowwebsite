@@ -473,7 +473,7 @@ footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
 ══════════════════════════════ -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-const RAZORPAY_KEY = 'YOUR_RAZORPAY_KEY_ID'; // ← Replace this
+const RAZORPAY_KEY = 'rzp_live_Su1ImG9lt';
 
 function scrollToSection(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
 
@@ -524,12 +524,9 @@ function processPayment(){
   const email=document.getElementById('femail').value;
   const phone=document.getElementById('fphone').value;
 
-  // ── Real Razorpay Checkout ──
-  // Uncomment below and replace key once you have Razorpay account
-  /*
   const options = {
     key: RAZORPAY_KEY,
-    amount: 117800, // amount in paise (₹1,178 × 100)
+    amount: 117800,
     currency: 'INR',
     name: 'TaskFlow',
     description: 'TaskFlow Professional — Monthly',
@@ -538,23 +535,11 @@ function processPayment(){
     notes: { firm: document.getElementById('ffirm').value },
     theme: { color: '#1a56db' },
     handler: function(response) {
-      // Payment success — provision the sheet here
       showSuccess(name, email);
     }
   };
   const rzp = new Razorpay(options);
   rzp.open();
-  */
-
-  // ── Demo mode (remove once Razorpay is configured) ──
-  const btn=document.getElementById('payBtn');
-  btn.disabled=true;
-  btn.innerHTML='<div class="spinner"></div> Processing...';
-  setTimeout(()=>{
-    btn.disabled=false;
-    btn.innerHTML='Pay ₹1,178 Securely →';
-    showSuccess(name,email);
-  },2200);
 }
 
 function showSuccess(name,email){
