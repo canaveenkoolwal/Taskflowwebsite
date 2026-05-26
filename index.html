@@ -519,26 +519,65 @@ function selectPay(el){
   el.classList.add('selected');
 }
 
-function processPayment(){
+async function processPayment(){
   const name=document.getElementById('fname').value;
   const email=document.getElementById('femail').value;
   const phone=document.getElementById('fphone').value;
+  const firm=document.getElementById('ffirm').value;
 
-  const options = {
+  const btn=document.getElementById('payBtn');
+  btn.disabled=true;
+  btn.textContent='Creating order…';
+
+  let order;
+  try {
+    const res=await fetch('https://taskflowbackend-o1vg.onrender.com/payment/create-order',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,email,phone,firm})
+    });
+    if(!res.ok) throw new Error('Order creation failed');
+    order=await res.json();
+  } catch(e){
+    btn.disabled=false;
+    btn.textContent='Pay ₹1,178 Securely →';
+    alert('Could not initiate payment. Please try again.');
+    return;
+  }
+
+  btn.disabled=false;
+  btn.textContent='Pay ₹1,178 Securely →';
+
+  const options={
     key: RAZORPAY_KEY,
-    amount: 117800,
-    currency: 'INR',
+    amount: 500, // TEST: ₹5 — restore to order.amount before going live
+    currency: order.currency||'INR',
     name: 'TaskFlow',
     description: 'TaskFlow Professional — Monthly',
     image: 'https://nkoolwal.com/logo.png',
-    prefill: { name, email, contact: phone },
-    notes: { firm: document.getElementById('ffirm').value },
-    theme: { color: '#1a56db' },
-    handler: function(response) {
-      showSuccess(name, email);
+    order_id: order.id,
+    prefill: {name, email, contact:phone},
+    notes: {firm},
+    theme: {color:'#1a56db'},
+    handler: async function(response){
+      try {
+        const verifyRes=await fetch('https://taskflowbackend-o1vg.onrender.com/payment/verify',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature
+          })
+        });
+        if(!verifyRes.ok) throw new Error('Verification failed');
+        showSuccess(name,email);
+      } catch(e){
+        alert('Payment verification failed. Please contact support with your payment ID: '+response.razorpay_payment_id);
+      }
     }
   };
-  const rzp = new Razorpay(options);
+  const rzp=new Razorpay(options);
   rzp.open();
 }
 
