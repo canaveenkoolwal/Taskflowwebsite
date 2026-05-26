@@ -226,7 +226,7 @@ footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
       <div class="stat"><span class="stat-num">50+</span><div class="stat-label">Firms Using TaskFlow</div></div>
       <div class="stat"><span class="stat-num">5,000+</span><div class="stat-label">Tasks Managed</div></div>
       <div class="stat"><span class="stat-num">98%</span><div class="stat-label">On-time Delivery Rate</div></div>
-      <div class="stat"><span class="stat-num">₹999</span><div class="stat-label">Per Month Only</div></div>
+      <div class="stat"><span class="stat-num">₹1</span><div class="stat-label">Per Month Only</div></div>
     </div>
   </section>
 
@@ -280,7 +280,7 @@ footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
         <div class="price-card featured">
           <div class="price-badge">⭐ Most Popular</div>
           <div class="price-plan">Professional</div>
-          <div class="price-amount">₹999<span>/month</span></div>
+          <div class="price-amount">₹1<span>/month</span></div>
           <div class="price-desc">Everything your growing firm needs to stay on top.</div>
           <div class="price-divider"></div>
           <ul class="price-features">
@@ -311,7 +311,7 @@ footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
       <div class="testimonials-grid">
         <div class="testimonial"><div class="stars">★★★★★</div><div class="testimonial-text">"TaskFlow completely changed how we manage client deliverables. The email alerts alone saved us from missing 3 critical deadlines last month."</div><div class="testimonial-author"><div class="author-avatar">RK</div><div><div class="author-name">Rajesh Kumar</div><div class="author-role">Director, Kumar & Associates</div></div></div></div>
         <div class="testimonial"><div class="stars">★★★★★</div><div class="testimonial-text">"Our team of 15 uses it daily. The recurring tasks feature is a game-changer — monthly compliances never slip through the cracks anymore."</div><div class="testimonial-author"><div class="author-avatar">PS</div><div><div class="author-name">Priya Sharma</div><div class="author-role">CA, Sharma Tax Consultants</div></div></div></div>
-        <div class="testimonial"><div class="stars">★★★★★</div><div class="testimonial-text">"Best ₹999 we spend every month. The dashboard gives me a complete picture of where every task stands — I check it every morning."</div><div class="testimonial-author"><div class="author-avatar">AM</div><div><div class="author-name">Amit Mehta</div><div class="author-role">MD, Mehta Manufacturing</div></div></div></div>
+        <div class="testimonial"><div class="stars">★★★★★</div><div class="testimonial-text">"Best ₹1 we spend every month. The dashboard gives me a complete picture of where every task stands — I check it every morning."</div><div class="testimonial-author"><div class="author-avatar">AM</div><div><div class="author-name">Amit Mehta</div><div class="author-role">MD, Mehta Manufacturing</div></div></div></div>
       </div>
     </div>
   </section>
@@ -415,7 +415,7 @@ footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
             <div class="plan-name">TaskFlow Professional</div>
             <div style="font-size:13px;color:#5376b7;margin-top:2px">Unlimited users · All features</div>
           </div>
-          <div class="plan-price">₹999<span>/mo</span></div>
+          <div class="plan-price">₹1<span>/mo</span></div>
         </div>
         <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">Pay via</div>
         <div class="payment-options">
@@ -425,15 +425,13 @@ footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
           <div class="payment-opt" onclick="selectPay(this)"><div class="payment-opt-icon">👛</div><div class="payment-opt-label">Wallets</div></div>
         </div>
         <div class="order-summary">
-          <div class="order-row"><span class="order-label">TaskFlow Pro (1 month)</span><span class="order-value">₹999</span></div>
-          <div class="order-row"><span class="order-label">GST (18%)</span><span class="order-value">₹179</span></div>
-          <div class="order-row"><span class="order-label">Discount</span><span class="order-value blue">— ₹0</span></div>
-          <div class="order-row total"><span class="order-label">Total Today</span><span class="order-value">₹1,178</span></div>
+          <div class="order-row"><span class="order-label">TaskFlow Pro (1 month)</span><span class="order-value">₹1</span></div>
+          <div class="order-row total"><span class="order-label">Total Today</span><span class="order-value">₹1</span></div>
         </div>
         <div style="font-size:12px;color:var(--text3);background:var(--bg);padding:10px 14px;border-radius:8px;margin-bottom:16px;line-height:1.6">
-          🔄 Auto-renews every month at ₹999 + GST. Cancel anytime from your dashboard.
+          🔄 Auto-renews every month at ₹1. Cancel anytime from your dashboard.
         </div>
-        <button class="btn-main" id="payBtn" onclick="processPayment()">Pay ₹1,178 Securely →</button>
+        <button class="btn-main" id="payBtn" onclick="processPayment()">Pay ₹1 Securely →</button>
         <div style="text-align:center;margin-top:10px">
           <span style="font-size:13px;color:var(--text3);cursor:pointer" onclick="goBackToSignup()">← Back to signup</span>
         </div>
@@ -540,13 +538,13 @@ async function processPayment(){
     order=await res.json();
   } catch(e){
     btn.disabled=false;
-    btn.textContent='Pay ₹1,178 Securely →';
+    btn.textContent='Pay ₹1 Securely →';
     alert('Could not initiate payment. Please try again.');
     return;
   }
 
   btn.disabled=false;
-  btn.textContent='Pay ₹1,178 Securely →';
+  btn.textContent='Pay ₹1 Securely →';
 
   const options={
     key: RAZORPAY_KEY,
