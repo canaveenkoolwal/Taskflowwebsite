@@ -195,9 +195,9 @@ footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
     <div class="nav-inner">
       <div class="logo">Task<span>Flow</span></div>
       <div class="nav-links">
-        <a onclick="scrollTo('features')">Features</a>
-        <a onclick="scrollTo('how')">How it works</a>
-        <a onclick="scrollTo('pricing')">Pricing</a>
+        <a onclick="scrollToSection('features')">Features</a>
+        <a onclick="scrollToSection('how')">How it works</a>
+        <a onclick="scrollToSection('pricing')">Pricing</a>
         <a class="nav-cta" onclick="showSignup()">Start Free Trial</a>
       </div>
     </div>
@@ -210,7 +210,7 @@ footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
       <p>TaskFlow brings your entire team's work into one place — assign tasks, track progress, get alerts, and hit deadlines. All inside Google Sheets.</p>
       <div class="hero-cta">
         <button class="btn btn-primary" onclick="showSignup()">Start Free Trial →</button>
-        <button class="btn btn-outline" onclick="scrollTo('how')">See How It Works</button>
+        <button class="btn btn-outline" onclick="scrollToSection('how')">See How It Works</button>
       </div>
       <div class="hero-trust">
         <div class="trust-dots">
@@ -331,8 +331,8 @@ footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
     <div class="footer-inner">
       <div class="footer-logo">TaskFlow</div>
       <div class="footer-links">
-        <a onclick="scrollTo('features')">Features</a>
-        <a onclick="scrollTo('pricing')">Pricing</a>
+        <a onclick="scrollToSection('features')">Features</a>
+        <a onclick="scrollToSection('pricing')">Pricing</a>
         <a href="privacy.html">Privacy Policy</a>
         <a href="mailto:support@nkoolwal.com">Contact</a>
       </div>
@@ -475,7 +475,7 @@ footer{background:#0f172a;padding:48px 5%;color:rgba(255,255,255,0.6)}
 <script>
 const RAZORPAY_KEY = 'YOUR_RAZORPAY_KEY_ID'; // ← Replace this
 
-function scrollTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
+function scrollToSection(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
 
 function showSignup(){
   document.getElementById('landingView').style.display='none';
